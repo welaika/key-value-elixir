@@ -15,7 +15,9 @@ defmodule KV.BucketTest do
 
   test "deletes value by key", %{ bucket: bucket } do
     KV.Bucket.put(bucket, "milk", 4)
-    KV.Bucket.delete(bucket, "milk")
+    KV.Bucket.put(bucket, "eggs", 2)
+    KV.Bucket.delete(bucket, "milk") == 4
     assert KV.Bucket.get(bucket, "milk") == nil
+    assert KV.Bucket.get(bucket, "eggs") == 2
   end
 end
