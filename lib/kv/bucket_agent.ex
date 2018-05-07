@@ -1,4 +1,4 @@
-defmodule KV.Bucket do
+defmodule KV.BucketAgent do
   use Agent
 
   def start_link(_options \\ []) do
