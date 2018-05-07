@@ -20,4 +20,9 @@ defmodule KV.BucketAgentTest do
     assert KV.BucketAgent.get(bucket, "milk") == nil
     assert KV.BucketAgent.get(bucket, "eggs") == 2
   end
+
+  test "stops the agent", %{ bucket: bucket } do
+    KV.BucketAgent.stop(bucket)
+    assert Process.alive?(bucket) == false
+  end
 end

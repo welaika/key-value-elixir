@@ -19,6 +19,10 @@ defmodule KV.BucketGenServer do
     GenServer.call(bucket, { :delete, key })
   end
 
+  def stop(bucket, reason \\ :normal) do
+    GenServer.stop(bucket, reason)
+  end
+
   # Server interface (callbacks)
 
   def init(state) do

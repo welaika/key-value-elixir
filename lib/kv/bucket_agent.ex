@@ -16,4 +16,8 @@ defmodule KV.BucketAgent do
   def delete(bucket, key) do
     Agent.get_and_update(bucket, &Map.pop(&1, key))
   end
+
+  def stop(bucket, reason \\ :normal) do
+    Agent.stop(bucket, reason)
+  end
 end

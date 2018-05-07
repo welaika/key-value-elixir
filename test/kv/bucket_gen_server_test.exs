@@ -20,4 +20,9 @@ defmodule KV.BucketGenServerTest do
     assert KV.BucketGenServer.get(bucket, "milk") == nil
     assert KV.BucketGenServer.get(bucket, "eggs") == 2
   end
+
+  test "stops the agent", %{ bucket: bucket } do
+    KV.BucketGenServer.stop(bucket)
+    assert Process.alive?(bucket) == false
+  end
 end
