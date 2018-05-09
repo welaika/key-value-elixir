@@ -3,8 +3,8 @@ defmodule KV.BucketGenServer do
 
   # Client interface
 
-  def start_link(_options \\ []) do
-    GenServer.start_link(__MODULE__, %{})
+  def start_link(options \\ []) do
+    GenServer.start_link(__MODULE__, %{}, options)
   end
 
   def get(bucket, key) do
