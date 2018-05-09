@@ -2,7 +2,7 @@ defmodule KV.BucketGenServerTest do
   use ExUnit.Case, async: true
 
   setup do
-    { :ok, bucket } = KV.BucketGenServer.start_link()
+    bucket = start_supervised!(KV.BucketGenServer)
     %{ bucket: bucket }
   end
 

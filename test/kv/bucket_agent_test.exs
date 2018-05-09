@@ -2,7 +2,7 @@ defmodule KV.BucketAgentTest do
   use ExUnit.Case, async: true
 
   setup do
-    { :ok, bucket } = KV.BucketAgent.start_link()
+    bucket = start_supervised!(KV.BucketAgent)
     %{ bucket: bucket }
   end
 
