@@ -1,8 +1,8 @@
 defmodule KV.BucketAgent do
   use Agent
 
-  def start_link(_options \\ []) do
-    Agent.start_link(fn -> %{} end)
+  def start_link(options \\ []) do
+    Agent.start_link(fn -> %{} end, options)
   end
 
   def get(bucket, key) do
