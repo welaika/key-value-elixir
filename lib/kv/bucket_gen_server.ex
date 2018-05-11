@@ -4,7 +4,7 @@ defmodule KV.BucketGenServer do
   # Client interface
 
   def start_link(options \\ []) do
-    GenServer.start_link(__MODULE__, %{}, options)
+    GenServer.start_link(__MODULE__, :ok, options)
   end
 
   def get(bucket, key) do
@@ -25,8 +25,8 @@ defmodule KV.BucketGenServer do
 
   # Server interface (callbacks)
 
-  def init(state) do
-    { :ok, state }
+  def init(:ok) do
+    { :ok, %{} }
   end
 
   def handle_call({ :get, key }, _from, state) do
