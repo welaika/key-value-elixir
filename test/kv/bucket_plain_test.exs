@@ -2,31 +2,27 @@ defmodule KV.BucketPlainTest do
   use ExUnit.Case, async: true
 
   setup do
-    bucket = KV.BucketPlain.start_link([])
+    { :ok, bucket } = KV.BucketPlain.start_link()
     %{ bucket: bucket }
   end
 
   test "stores values by key", %{ bucket: bucket } do
-    send bucket, { :get, "milk", self() }
-    assert_receive { :ok, nil }
+    assert KV.BucketPlain.get(bucket, "milk") == nil
 
-    send bucket, { :put, "milk", 5 }
-    send bucket, { :get, "milk", self() }
-    assert_receive { :ok, 5 }
+    KV.BucketPlain.put(bucket, "milk", 5)
+    assert KV.BucketPlain.get(bucket, "milk") == 5
   end
 
   test "deletes value by key", %{ bucket: bucket } do
-    send bucket, { :put, "milk", 5 }
-    send bucket, { :delete, "milk", self() }
-    assert_receive { :ok, 5 }
-
-    send bucket, { :get, "milk", self() }
-    assert_receive { :ok, nil }
+    KV.BucketPlain.put(bucket, "milk", 4)
+    KV.BucketPlain.put(bucket, "eggs", 2)
+    assert KV.BucketPlain.delete(bucket, "milk") == 4
+    assert KV.BucketPlain.get(bucket, "milk") == nil
+    assert KV.BucketPlain.get(bucket, "eggs") == 2
   end
 
   test "stops the agent", %{ bucket: bucket } do
-    assert Process.alive?(bucket) == true
-    send bucket, { :stop }
+    KV.BucketPlain.stop(bucket)
     Process.sleep(500)
     assert Process.alive?(bucket) == false
   end

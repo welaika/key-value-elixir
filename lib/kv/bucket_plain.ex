@@ -1,8 +1,35 @@
 defmodule KV.BucketPlain do
 
   def start_link(_options \\ []) do
-    spawn_link(__MODULE__, :loop, [%{}])
+    { :ok, spawn_link(__MODULE__, :loop, [%{}]) }
   end
+
+  def get(bucket, key) do
+    send bucket, { :get, key, self() }
+    receive do
+      { :ok, value } ->
+        value
+    end
+  end
+
+  def put(bucket, key, value) do
+    send bucket, { :put, key, value }
+    :ok
+  end
+
+  def delete(bucket, key) do
+    send bucket, { :delete, key, self() }
+    receive do
+      { :ok, value } ->
+        value
+    end
+  end
+
+  def stop(bucket, reason \\ :normal) do
+    send bucket, { :stop, reason }
+    :ok
+  end
+
 
   def loop(map) do
     receive do
@@ -17,8 +44,8 @@ defmodule KV.BucketPlain do
         { value, new_map } = Map.pop(map, key)
         send caller, { :ok, value }
         loop(new_map)
-      { :stop } ->
-        IO.puts "Bye!"
+      { :stop, reason } ->
+        IO.puts "Bye! reason: #{reason}"
       _ ->
         IO.puts "Da fuck?"
         loop(map)
