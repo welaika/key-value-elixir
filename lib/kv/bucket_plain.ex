@@ -1,7 +1,9 @@
 defmodule KV.BucketPlain do
 
+  # Client Interface
+
   def start_link(_options \\ []) do
-    { :ok, spawn_link(__MODULE__, :loop, [%{}]) }
+    { :ok, spawn_link(__MODULE__, :init, [:ok]) }
   end
 
   def get(bucket, key) do
@@ -30,6 +32,12 @@ defmodule KV.BucketPlain do
     :ok
   end
 
+  # Server interface (callbacks)
+
+  def init(:ok) do
+    state = %{}
+    loop(state)
+  end
 
   def loop(map) do
     receive do
